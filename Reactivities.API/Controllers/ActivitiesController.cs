@@ -10,20 +10,18 @@ namespace Reactivities.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ActivitiesController(AppDbContext context, IMediator mediator) : BaseController
+    public class ActivitiesController : BaseController
     {
         [HttpGet]
         public async Task<ActionResult<List<Activity>>> GetActivities()
         {
-            return await mediator.Send(new GetActivityList.Query()); 
+            return await Mediator.Send(new GetActivityList.Query()); 
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Activity>> GetActivity(string id)
         {
-            var activity = await context.Activities.FindAsync(id);
-            if (activity == null) return NotFound();
-            return Ok(activity);
+            return await Mediator.Send(new GetActivityDetails.Query{Id = id});
         }
     }
 }
