@@ -3,18 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 using Reactivities.Persistence;
 using Reactivities.Domain;
 using Microsoft.EntityFrameworkCore;
+using MediatR;
+using Reactivities.Application.Activities.Queries;
 
 namespace Reactivities.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ActivitiesController(AppDbContext context) : BaseController
+    public class ActivitiesController(AppDbContext context, IMediator mediator) : BaseController
     {
         [HttpGet]
         public async Task<ActionResult<List<Activity>>> GetActivities()
         {
-            var activities = await context.Activities.ToListAsync();
-            return Ok(activities);
+            return await mediator.Send(new GetActivityList.Query()); 
         }
 
         [HttpGet("{id}")]

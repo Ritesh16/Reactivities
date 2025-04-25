@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Reactivities.Application.Activities.Queries;
 using Reactivities.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,8 @@ builder.Services.AddDbContext<AppDbContext>(options => {
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
 builder.Services.AddCors();
+builder.Services.AddMediatR(x=> 
+    x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>());
 
 var app = builder.Build();
 
