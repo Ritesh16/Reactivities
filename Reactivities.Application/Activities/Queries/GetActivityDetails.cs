@@ -9,7 +9,7 @@ public class GetActivityDetails
 {
     public class Query: IRequest<Activity>
     {
-        public string Id { get; set; }
+        public required string Id { get; set; }
     }
 
     public class Handler(AppDbContext context) : IRequestHandler<Query, Activity>
