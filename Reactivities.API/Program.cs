@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Reactivities.Application.Activities.Queries;
+using Reactivities.Application.Core;
 using Reactivities.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,8 @@ builder.Services.AddDbContext<AppDbContext>(options => {
 builder.Services.AddCors();
 builder.Services.AddMediatR(x=> 
     x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>());
+
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
 var app = builder.Build();
 
