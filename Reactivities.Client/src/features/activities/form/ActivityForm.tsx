@@ -3,11 +3,10 @@ import { FormEvent } from "react";
 import { useActivities } from "../../../lib/hooks/useActivities";
 
 type Props = {
-  closeForm: () => void;
   activity?: Activity;
 }
 
-export default function ActivityForm({closeForm, activity}: Props) {
+export default function ActivityForm({activity}: Props) {
   const {updateActivity, createActivity} = useActivities();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -23,11 +22,9 @@ export default function ActivityForm({closeForm, activity}: Props) {
     if(activity) {
       data.id = activity.id;
       await updateActivity.mutateAsync(data as unknown as Activity);
-      closeForm();
     }
     else{
       await createActivity.mutateAsync(data as unknown as Activity);
-      closeForm();
     }
   };
 
