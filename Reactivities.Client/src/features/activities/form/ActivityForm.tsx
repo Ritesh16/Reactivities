@@ -45,7 +45,7 @@ export default function ActivityForm({activity}: Props) {
             <TextField name="city" label="City" defaultValue={activity?.city} />
             <TextField name="venue" label="Venue" defaultValue={activity?.venue} />
             <Box display='flex' justifyContent='end' gap={3}>
-              <Button onClick={closeForm} color="inherit">Cancel</Button>
+              <Button onClick={() => {}} color="inherit">Cancel</Button>
               <Button 
                   type="submit" 
                   color="success" 
