@@ -1,13 +1,13 @@
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { FormEvent } from "react";
 import { useActivities } from "../../../lib/hooks/useActivities";
+import { useNavigate, useParams } from "react-router";
 
-type Props = {
-  activity?: Activity;
-}
 
-export default function ActivityForm({activity}: Props) {
-  const {updateActivity, createActivity} = useActivities();
+export default function ActivityForm() {
+  const {id} = useParams();
+  const {updateActivity, createActivity, activity, isLoadingActivity} = useActivities(id);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 
@@ -22,11 +22,18 @@ export default function ActivityForm({activity}: Props) {
     if(activity) {
       data.id = activity.id;
       await updateActivity.mutateAsync(data as unknown as Activity);
+      navigate(`/activities/${activity.id}`);
     }
     else{
-      await createActivity.mutateAsync(data as unknown as Activity);
+      createActivity.mutate(data as unknown as Activity, {
+        onSuccess: (id) => {
+          navigate(`/activities/${id}`);
+        }
+      });
     }
   };
+
+  if(isLoadingActivity) return <Typography>Loading activity...</Typography>
 
   return (
     <Paper sx={{borderRadius: 3, padding: 3}}>
