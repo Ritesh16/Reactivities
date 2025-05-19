@@ -1,20 +1,15 @@
 import { Button, ButtonGroup, Typography } from '@mui/material';
-import { Observer } from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import { useStore } from '../../lib/hooks/useStore';
 
-export default function Counter() {
+const Counter = observer(function Counter() {
     const { counterStore } = useStore();
 
     return (
         <>
-            <Observer>
-                {() => (
-                    <>
-                        <Typography variant='h4' gutterBottom>{counterStore.title}</Typography>
-                        <Typography variant='h4' gutterBottom>The count is : {counterStore.count}</Typography>
-                    </>
-                )}
-            </Observer>
+            <Typography variant='h4' gutterBottom>{counterStore.title}</Typography>
+            <Typography variant='h4' gutterBottom>The count is : {counterStore.count}</Typography>
+
             <ButtonGroup sx={{ mt: 3 }}>
                 <Button onClick={() => counterStore.decrement()} variant="contained" color='error'>Decrement</Button>
                 <Button onClick={() => counterStore.increment()} variant="contained" color='success'>Increment</Button>
@@ -22,4 +17,6 @@ export default function Counter() {
             </ButtonGroup>
         </>
     )
-}
+});
+
+export default Counter;
