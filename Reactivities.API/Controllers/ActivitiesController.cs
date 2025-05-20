@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using MediatR;
 using Reactivities.Application.Activities.Queries;
 using Reactivities.Application.Activities.Commands;
+using Reactivities.Application.Activities.Dtos;
 
 namespace Reactivities.API.Controllers
 {
@@ -26,9 +27,9 @@ namespace Reactivities.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> CreateActivity([FromBody] Activity activity)
+        public async Task<ActionResult<string>> CreateActivity([FromBody] CreateActivityDto activityDto)
         {
-            return await Mediator.Send(new CreateActivity.Command { Activity = activity });
+            return await Mediator.Send(new CreateActivity.Command { ActivityDto = activityDto });
         }
 
         [HttpPut]
