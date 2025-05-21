@@ -1,5 +1,6 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Reactivities.API.Middleware;
 using Reactivities.Application.Activities.Queries;
 using Reactivities.Application.Activities.Validators;
 using Reactivities.Application.Core;
@@ -24,8 +25,11 @@ builder.Services.AddMediatR(x=>
 
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
+builder.Services.AddTransient<ExceptionMiddleware>();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseCors(x=> x.AllowAnyHeader()
         .AllowAnyMethod()

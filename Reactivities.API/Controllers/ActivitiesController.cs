@@ -23,7 +23,7 @@ namespace Reactivities.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Activity>> GetActivity(string id)
         {
-            return await Mediator.Send(new GetActivityDetails.Query { Id = id });
+            return HandleResult(await Mediator.Send(new GetActivityDetails.Query { Id = id }));
         }
 
         [HttpPost]
