@@ -33,9 +33,9 @@ namespace Reactivities.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> EditActivity([FromBody] Activity activity)
+        public async Task<ActionResult> EditActivity([FromBody] EditActivityDto activity)
         {
-            return HandleResult(await Mediator.Send(new EditActivity.Command { Activity = activity }));
+            return HandleResult(await Mediator.Send(new EditActivity.Command { ActivityDto = activity }));
         }
 
         [HttpDelete("{id}")]
