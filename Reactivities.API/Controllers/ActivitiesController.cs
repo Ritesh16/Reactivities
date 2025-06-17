@@ -7,6 +7,7 @@ using MediatR;
 using Reactivities.Application.Activities.Queries;
 using Reactivities.Application.Activities.Commands;
 using Reactivities.Application.Activities.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Reactivities.API.Controllers
 {
