@@ -1,9 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LoginSchema } from "../schemas/loginSchema";
 import agent from "../api/agent";
+import { useNavigate } from "react-router";
 
 export const useAccount = () => {
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
     const loginUser = useMutation({
         mutationFn: async (creds: LoginSchema) => {
@@ -11,8 +13,21 @@ export const useAccount = () => {
         },
         onSuccess: async () => {
             await queryClient.invalidateQueries({ 
-                queryKey: ['user'] 
+                queryKey: ['user']
             });
+
+            navigate('/activities');
+        }
+    });
+
+    const logoutUser = useMutation({
+        mutationFn: async () => {
+            await agent.post('/Account/logout');
+        },
+        onSuccess: () => {
+            queryClient.removeQueries({queryKey: ['user']});
+            queryClient.removeQueries({queryKey: ['activities']});
+            navigate('/');
         }
     });
 
@@ -22,10 +37,12 @@ export const useAccount = () => {
             const response = await agent.get('/account/user-info');
             return response.data;
         },
+        enabled: !queryClient.getQueryData(['user'])
     });
 
     return {
         loginUser,
-        currentUser
+        currentUser,
+        logoutUser
     }
 };
