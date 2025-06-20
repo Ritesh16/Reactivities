@@ -1,11 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LoginSchema } from "../schemas/loginSchema";
 import agent from "../api/agent";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 export const useAccount = () => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const loginUser = useMutation({
         mutationFn: async (creds: LoginSchema) => {
@@ -15,6 +17,16 @@ export const useAccount = () => {
             await queryClient.invalidateQueries({ 
                 queryKey: ['user']
             });
+        }
+    });
+
+    const registerUser = useMutation({
+        mutationFn: async (creds: LoginSchema) => {
+            await agent.post('/account/register', creds);
+        },
+        onSuccess: async () => {
+            toast.success('Registration successful, you can now login');
+            navigate('/login');
         }
     });
 
@@ -36,12 +48,15 @@ export const useAccount = () => {
             return response.data;
         },
         enabled: !queryClient.getQueryData(['user'])
+                && location.pathname !== '/login'
+                && location.pathname !== '/register'
     });
 
     return {
         loginUser,
         currentUser,
         logoutUser,
-        loadingUserInfo
+        loadingUserInfo,
+        registerUser
     }
 };

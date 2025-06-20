@@ -9,6 +9,7 @@ namespace Reactivities.API.Controllers
 {
     public class AccountController(SignInManager<User> signInManager) : BaseController
     {
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult> RegisterUser(RegisterDto registerDto)
         {
