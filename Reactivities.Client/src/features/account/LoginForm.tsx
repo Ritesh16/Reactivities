@@ -5,16 +5,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Paper, Typography } from "@mui/material";
 import { LockOpen } from "@mui/icons-material";
 import TextInput from "../../app/shared/components/TextInput";
+import { useLocation, useNavigate } from "react-router";
 
 export default function LoginForm() {
     const { loginUser } = useAccount();
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const { control, handleSubmit, formState: { isValid, isSubmitting} } = useForm<LoginSchema>({
         mode: 'onTouched',
         resolver: zodResolver(loginSchema)
     });
 
-    const onSubmit = (data: LoginSchema) => {
-        return loginUser.mutateAsync(data);
+    const onSubmit = async (data: LoginSchema) => {
+         await loginUser.mutateAsync(data, {
+            onSuccess: () => {
+                navigate(location.state?.from || '/activities');
+            }
+         });
     };
 
     return (

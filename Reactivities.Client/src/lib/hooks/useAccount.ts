@@ -15,8 +15,6 @@ export const useAccount = () => {
             await queryClient.invalidateQueries({ 
                 queryKey: ['user']
             });
-
-            navigate('/activities');
         }
     });
 
@@ -31,7 +29,7 @@ export const useAccount = () => {
         }
     });
 
-    const {data: currentUser} = useQuery({
+    const {data: currentUser, isLoading: loadingUserInfo} = useQuery({
         queryKey: ['user'],
         queryFn: async () => {
             const response = await agent.get('/account/user-info');
@@ -43,6 +41,7 @@ export const useAccount = () => {
     return {
         loginUser,
         currentUser,
-        logoutUser
+        logoutUser,
+        loadingUserInfo
     }
 };
