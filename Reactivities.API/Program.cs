@@ -7,7 +7,9 @@ using Reactivities.API.Middleware;
 using Reactivities.Application.Activities.Queries;
 using Reactivities.Application.Activities.Validators;
 using Reactivities.Application.Core;
+using Reactivities.Application.Interfaces;
 using Reactivities.Domain;
+using Reactivities.Infrastructure;
 using Reactivities.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +36,7 @@ builder.Services.AddMediatR(x=>
     x.AddOpenBehavior(typeof(ValidationBehavior<,>));   
 });
 
+builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
 builder.Services.AddTransient<ExceptionMiddleware>();
