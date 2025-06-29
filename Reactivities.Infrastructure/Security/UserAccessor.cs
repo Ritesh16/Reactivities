@@ -5,7 +5,7 @@ using Reactivities.Application.Interfaces;
 using Reactivities.Domain;
 using Reactivities.Persistence;
 
-namespace Reactivities.Infrastructure;
+namespace Reactivities.Infrastructure.Security;
 
 public class UserAccessor(IHttpContextAccessor httpContextAccessor, AppDbContext appDbContext) : IUserAccessor
 {

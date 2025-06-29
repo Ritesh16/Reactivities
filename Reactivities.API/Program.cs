@@ -9,7 +9,7 @@ using Reactivities.Application.Activities.Validators;
 using Reactivities.Application.Core;
 using Reactivities.Application.Interfaces;
 using Reactivities.Domain;
-using Reactivities.Infrastructure;
+using Reactivities.Infrastructure.Security;
 using Reactivities.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,6 +46,14 @@ builder.Services.AddIdentityApiEndpoints<User>(opt =>
 })
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddAuthorization(opt =>
+{
+    opt.AddPolicy("IsActivityHost", policy =>
+    {
+        policy.Requirements.Add(new IsHostRequirement());
+    });
+});
+builder.Services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
 
 var app = builder.Build();
 
