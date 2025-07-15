@@ -6,7 +6,6 @@ type Props = {
 
 export default function ActivityDetailsSidebar({ activity }: Props) {
     const following = true;
-    const isHost = true;
     return (
         <>
             <Paper
@@ -24,7 +23,7 @@ export default function ActivityDetailsSidebar({ activity }: Props) {
             </Paper>
             <Paper sx={{ padding: 2 }}>
                 {activity.attendees.map(attendee => (
-                    <Grid2 container alignItems="center">
+                    <Grid2 key={attendee.id} container alignItems="center">
                         <Grid2 size={8}>
                             <List sx={{ display: 'flex', flexDirection: 'column' }}>
                                 <ListItem>
