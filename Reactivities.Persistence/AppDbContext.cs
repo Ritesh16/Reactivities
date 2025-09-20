@@ -1,6 +1,7 @@
 ﻿using Reactivities.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Reactivities.Persistence;
 
@@ -27,5 +28,21 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<User>(op
             .HasOne(x => x.Activity)
             .WithMany(x => x.Attendees)
             .HasForeignKey(a => a.ActivityId);
+
+        var dateConverter = new ValueConverter<DateTime, DateTime>(
+            v => v.ToUniversalTime(),
+            v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+        );
+
+        foreach (var entityType in builder.Model.GetEntityTypes())
+        {
+            foreach (var property in entityType.GetProperties())
+            {
+                if (property.ClrType == typeof(DateTime))
+                {
+                    property.SetValueConverter(dateConverter);
+                }
+            }
+        }
     }
 }
